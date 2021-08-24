@@ -5,6 +5,7 @@ import {
 
 import { Tuple } from '@polkadot/types';
 
+import KeyringService from "../services/Keyring";
 import Charger from "../models/Charger";
 import config from "../config.json";
 
@@ -24,6 +25,12 @@ class DelmonicosService {
           creation: 'Moment',
           nonce: 'u64',
         },
+        PaymentConsent: {
+          timestamp: 'Moment',
+          iban: 'Vec<u8>',
+          bic_code: 'Vec<u8>',
+          signature: 'Vec<u8>',
+        }
       },
     });
   }
@@ -78,6 +85,36 @@ class DelmonicosService {
         lat: decoded[0],
         lng: decoded[1],
       };
+    });
+  }
+
+  async hasPaymentConsent(address: string): Promise<boolean> {
+    const api = await this.getApi();
+    const consent = await api.query.sessionPayment.paymentConsents(address) as unknown as any;
+    return consent.isSome;
+  }
+
+  async setPaymentConsent(iban: string, bic: string): Promise<void> {
+    const api = await this.getApi();
+    const tx = await api.tx.sessionPayment.newConsent(iban, bic, '') as unknown as any;
+    return new Promise((resolve, reject) => {
+      tx
+        .signAndSend(KeyringService.keypair, (status: any) => {
+          if(status.isInBlock) return resolve();
+        })
+        .catch(reject);
+    });
+  }
+
+  async newChargeRequest(chargerId: string): Promise<void> {
+    const api = await this.getApi();
+    const tx = await api.tx.chargeSession.newRequest(chargerId) as unknown as any;
+    return new Promise((resolve, reject) => {
+      tx
+        .signAndSend(KeyringService.keypair, (status: any) => {
+          if(status.isInBlock) return resolve();
+        })
+        .catch(reject);
     });
   }
 

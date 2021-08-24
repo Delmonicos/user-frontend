@@ -9,7 +9,9 @@ import {
 import Router from "./components/Router";
 import AppBar from "./components/AppBar";
 import theme from "./theme";
-import DelmonicosService from './services/Delmonicos';
+import DelmonicosService from "./services/Delmonicos";
+import KeyringService from "./services/Keyring";
+import UserContextProvider from "./components/UserContext";
 
 const Loading = () => {
   return (
@@ -29,6 +31,7 @@ const App = () => {
   useEffect(() => {
     DelmonicosService
       .connect()
+      .then(() => KeyringService.init())
       .then(() => setInitialized(true));
   }, []);
 
@@ -37,9 +40,11 @@ const App = () => {
       <CssBaseline />
       { isInitialized === false && <Loading /> }
       { isInitialized && (
-        <Router>
-          <AppBar />
-        </Router>
+        <UserContextProvider>
+          <Router>
+            <AppBar />
+          </Router>
+        </UserContextProvider>
       )}
     </ThemeProvider>
   );

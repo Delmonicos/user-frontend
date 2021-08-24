@@ -3,13 +3,12 @@ import {
   MapContainer,
   TileLayer,
   Marker,
-  Popup,
 } from "react-leaflet";
 
 import Charger from "../models/Charger";
 import DelmonicosService from "../services/Delmonicos";
 
-const ChargersMap = () => {
+const ChargersMap = ({ selectCharger } : { selectCharger: (_: Charger) => void }) => {
   const [chargers, setChargers] = useState<Charger[]>([]);
   
   useEffect(() => {
@@ -35,10 +34,10 @@ const ChargersMap = () => {
         <Marker
           key={charger.id}
           position={[charger.lat, charger.lng]}
+          eventHandlers={{
+            click: () => selectCharger(charger)
+          }}
         >
-          <Popup>
-            { charger.id }
-          </Popup>
         </Marker>
       ))}
     </MapContainer>
