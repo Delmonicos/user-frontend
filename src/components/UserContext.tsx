@@ -1,6 +1,5 @@
 import {
   useState,
-  useEffect,
   createContext,
   ReactElement,
 } from "react";
@@ -18,16 +17,19 @@ const UserContext = createContext<Context>({
   reload: () => {},
 });
 
-const UserContextProvider = ({ children } : { children: ReactElement }) => {
-  const [ hasPaymentConsent, setPaymentConsent ] = useState(false);
+interface UserContextProviderProps {
+  initialState: { hasPaymentConsent: boolean };
+  children: ReactElement;
+}
+
+const UserContextProvider = ({ initialState, children } : UserContextProviderProps) => {
+  const [ hasPaymentConsent, setPaymentConsent ] = useState(initialState.hasPaymentConsent);
 
   const reloadUser = () => {
     DelmonicosService
-      .hasPaymentConsent(KeyringService.address!)
+      .hasPaymentConsent(KeyringService.address)
       .then(setPaymentConsent)
   };
-
-  useEffect(reloadUser, []);
 
   const context = {
     hasPaymentConsent,

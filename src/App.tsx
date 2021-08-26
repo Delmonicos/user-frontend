@@ -28,10 +28,13 @@ const Loading = () => {
 
 const App = () => {
   const [ isInitialized, setInitialized ] = useState(false);
+  const [ initialUserState, setInitialUserState ] = useState({ hasPaymentConsent: false });
   useEffect(() => {
     DelmonicosService
       .connect()
       .then(() => KeyringService.init())
+      .then(() => DelmonicosService.fundAccountIfRequired(KeyringService.address))
+      .then(() => DelmonicosService.hasPaymentConsent(KeyringService.address).then((consent) => setInitialUserState({ hasPaymentConsent: consent })))
       .then(() => setInitialized(true));
   }, []);
 
@@ -40,7 +43,7 @@ const App = () => {
       <CssBaseline />
       { isInitialized === false && <Loading /> }
       { isInitialized && (
-        <UserContextProvider>
+        <UserContextProvider initialState={initialUserState}>
           <Router>
             <AppBar />
           </Router>
