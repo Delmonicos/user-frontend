@@ -32,6 +32,9 @@
       "react-app"
     ]
   },
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "browserslist": [
     ">0.2%",
     "not dead",
