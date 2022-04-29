@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   CssBaseline,
   ThemeProvider,
@@ -8,6 +8,7 @@ import {
 
 import Router from "./components/Router";
 import AppBar from "./components/AppBar";
+import Drawer from "./components/Drawer";
 import theme from "./theme";
 import DelmonicosService from "./services/Delmonicos";
 import KeyringService from "./services/Keyring";
@@ -27,8 +28,10 @@ const Loading = () => {
 };
 
 const App = () => {
+  const [ drawerOpen, setDrawerOpen ] = useState(false);
   const [ isInitialized, setInitialized ] = useState(false);
   const [ initialUserState, setInitialUserState ] = useState({ hasPaymentConsent: false });
+
   useEffect(() => {
     DelmonicosService
       .connect()
@@ -38,15 +41,25 @@ const App = () => {
       .then(() => setInitialized(true));
   }, []);
 
+  const toggleDrawer = useCallback(() => {
+    setDrawerOpen(!drawerOpen);
+  }, [ drawerOpen, setDrawerOpen ]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       { isInitialized === false && <Loading /> }
       { isInitialized && (
         <UserContextProvider initialState={initialUserState}>
-          <Router>
-            <AppBar />
-          </Router>
+            <Router>
+              <>
+                <Drawer
+                  open={drawerOpen}
+                  toggle={toggleDrawer}
+                />
+                <AppBar toggleDrawer={toggleDrawer} />
+              </>
+            </Router>
         </UserContextProvider>
       )}
     </ThemeProvider>

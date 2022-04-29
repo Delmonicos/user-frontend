@@ -1,22 +1,22 @@
 import { useContext } from "react";
-import ChargeRequest from "../components/ChargeRequest";
+import Charger from "../components/Charger";
 import { useParams } from "react-router-dom";
 
 import Page from "../components/Page";
 import RegisterPayment from "../components/RegisterPayment";
 import { UserContext } from "../components/UserContext";
 
-const NewRequest = () => {
+const ChargerDetail = () => {
   const { hasPaymentConsent } = useContext(UserContext);
   const { chargerId } = useParams<{ chargerId: string }>();
   return (
-    <Page>
+    <Page size="xs">
       <>
         { hasPaymentConsent === false && <RegisterPayment /> }
-        { hasPaymentConsent && <ChargeRequest  chargerId={chargerId} /> }
+        { hasPaymentConsent && <Charger  chargerId={chargerId} /> }
       </>
     </Page>
   );
 };
 
-export default NewRequest;
+export default ChargerDetail;

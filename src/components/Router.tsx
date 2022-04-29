@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 
 import ChargersPage from "../pages/Chargers";
-import NewRequestPage from "../pages/NewRequest";
+import ChargerDetailPage from "../pages/ChargerDetail";
 
 const Router = ({ children } : { children: ReactElement }) => {
   return (
@@ -25,12 +25,12 @@ const Router = ({ children } : { children: ReactElement }) => {
           { children }
         </Box>
         <Container
-          maxWidth="lg"
+          maxWidth="md"
           style={{ flexGrow: 1, padding: 0 }}
         >
           <Switch>
             <Route path="/chargers" exact component={ChargersPage} />
-            <Route path="/chargers/:chargerId" component={NewRequestPage} />
+            <Route path="/chargers/:chargerId" component={ChargerDetailPage} />
             <Route>
               <Redirect to="/chargers" />
             </Route>

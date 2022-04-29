@@ -3,12 +3,11 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  Link,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Link as RouterLink } from "react-router-dom";
 
-const AppBar = () => {
+const AppBar = ({ toggleDrawer }: { toggleDrawer: () => void }) => {
 
   return (
     <MuiAppBar
@@ -16,7 +15,7 @@ const AppBar = () => {
       elevation={0}
     >
       <Toolbar>
-        <IconButton edge="start" color="inherit">
+        <IconButton edge="start" color="inherit" onClick={toggleDrawer}>
           <MenuIcon />
         </IconButton>
         <Typography

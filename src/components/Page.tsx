@@ -1,11 +1,16 @@
 import { ReactElement } from "react"
-import { Box } from "@material-ui/core"
+import { Box, Container } from "@material-ui/core"
 
-const Page = ({ children }: { children: ReactElement }) => {
+const Page = ({ children, size }: { children: ReactElement, size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' }) => {
   return (
-    <Box p={1} height="100%">
-      { children }
-    </Box>
+    <Container
+      style={{ height: '100%' }}
+      maxWidth={size || "md"}
+    >
+      <Box p={1} height="100%">
+        { children }
+      </Box>
+    </Container>
   )
 };
 

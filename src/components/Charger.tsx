@@ -9,6 +9,7 @@ import {
   CardContent,
 } from "@material-ui/core";
 import FreeIcon from '@material-ui/icons/CheckCircle';
+import { Link as RouterLink } from 'react-router-dom';
 
 import DelmonicosService from "../services/Delmonicos";
 import useCharger from "../hooks/useCharger";
@@ -51,7 +52,7 @@ const InProgress = ({ data, request }: { data: { userId: string; sessionId: stri
   );
 };
 
-const ChargeRequest = ({ chargerId } : { chargerId: string }) => {
+const Charger = ({ chargerId } : { chargerId: string }) => {
   const { loading: loadingStatus, chargerFree, currentChargeRequest, currentChargeSession } = useCharger(chargerId);
   const [loadingRequest, setLoadingRequest] = useState(false);
   
@@ -105,7 +106,16 @@ const ChargeRequest = ({ chargerId } : { chargerId: string }) => {
             onClick={handleStart}
             disabled={chargerFree === false || loadingRequest || loadingStatus}
           >
-            Start
+            Start Charge
+          </Button>
+          <Button
+            component={RouterLink}
+            variant="text"
+            to="/chargers"
+            fullWidth
+            style={{ marginTop: 5 }}
+          >
+            Close
           </Button>
         </Box>
         { (loadingRequest || loadingStatus) && (
@@ -116,4 +126,4 @@ const ChargeRequest = ({ chargerId } : { chargerId: string }) => {
   );
 };
 
-export default ChargeRequest;
+export default Charger;
