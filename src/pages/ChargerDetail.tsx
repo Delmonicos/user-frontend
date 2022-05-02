@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import Charger from "../components/Charger";
 import { useParams } from "react-router-dom";
+import '@polkadot/api-augment';
 
 import Page from "../components/Page";
 import RegisterPayment from "../components/RegisterPayment";
@@ -12,8 +13,8 @@ const ChargerDetail = () => {
   return (
     <Page size="xs">
       <>
-        { hasPaymentConsent === false && <RegisterPayment /> }
-        { hasPaymentConsent && <Charger  chargerId={chargerId} /> }
+        {hasPaymentConsent === false && <RegisterPayment />}
+        {hasPaymentConsent && <Charger chargerId={chargerId || ''} />}
       </>
     </Page>
   );
