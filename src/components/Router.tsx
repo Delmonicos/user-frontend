@@ -1,9 +1,9 @@
 import { ReactElement } from "react";
 import {
   BrowserRouter,
-  Switch,
+  Routes,
   Route,
-  Redirect,
+  Navigate,
 } from "react-router-dom";
 import {
   Container,
@@ -13,7 +13,7 @@ import {
 import ChargersPage from "../pages/Chargers";
 import ChargerDetailPage from "../pages/ChargerDetail";
 
-const Router = ({ children } : { children: ReactElement }) => {
+const Router = ({ children }: { children: ReactElement }) => {
   return (
     <Box
       height="100%"
@@ -22,19 +22,17 @@ const Router = ({ children } : { children: ReactElement }) => {
     >
       <BrowserRouter>
         <Box>
-          { children }
+          {children}
         </Box>
         <Container
           maxWidth="md"
           style={{ flexGrow: 1, padding: 0 }}
         >
-          <Switch>
-            <Route path="/chargers" exact component={ChargersPage} />
-            <Route path="/chargers/:chargerId" component={ChargerDetailPage} />
-            <Route>
-              <Redirect to="/chargers" />
-            </Route>
-          </Switch>
+          <Routes>
+            <Route path="/chargers" element={<ChargersPage />} />
+            <Route path="/chargers/:chargerId" element={<ChargerDetailPage />} />
+            <Route path="*" element={<Navigate to="/chargers" />} />
+          </Routes>
         </Container>
       </BrowserRouter>
     </Box>

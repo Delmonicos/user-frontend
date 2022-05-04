@@ -6,6 +6,7 @@ import { KeyringPair } from '@polkadot/keyring/types';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { ISubmittableResult } from '@polkadot/types/types';
 import { Tuple } from '@polkadot/types';
+import { Buffer } from 'buffer';
 
 import KeyringService from "../services/Keyring";
 import Charger from "../models/Charger";
@@ -91,7 +92,7 @@ class DelmonicosService {
           });
       })
     );
-    
+
     return chargers.map(({ chargerId, location }) => {
       const decoded = JSON.parse(location);
       return {
